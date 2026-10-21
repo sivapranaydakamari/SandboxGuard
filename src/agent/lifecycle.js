@@ -59,11 +59,18 @@ export async function withSandbox(options, fn) {
   let status = "failed";
 
   try {
-    // Attempt creation through Celesto SDK
-    computer = await Computer.create({
-      templateId: options.templateId || "scratch",
-      ...options.params
-    });
+    // Attempt creation through Celesto SDK with required idempotency key
+    computer = await Computer.create(
+      {
+        templateId: options.templateId || "scratch",
+        ...options.params
+      },
+      {
+        headers: {
+          "Idempotency-Key": crypto.randomUUID()
+        }
+      }
+    );
 
     activeSandboxes.set(sandboxName, computer);
 
