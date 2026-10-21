@@ -1,0 +1,15 @@
+{
+  "capabilities": [
+    {
+      "id": "safety_hooks",
+      "why": "Safety hooks allow pre-execution command inspection outside the guest VM, blocking prompt-injected exfiltration attempts and destructive filesystem operations before they reach the computer.",
+      "evidence_path": "src/agent/safety.js"
+    },
+    {
+      "id": "snapshots",
+      "why": "Snapshots enable instantaneous filesystem checkpointing prior to executing untrusted install scripts, providing a zero-overhead rollback mechanism when step 7 of a 10-step detonation fails.",
+      "evidence_path": "src/agent/controller.js"
+    }
+  ]
+}
+

@@ -1,0 +1,8 @@
+{
+  "failed_step": 7,
+  "total_steps": 10,
+  "policy": "rollback",
+  "rationale": "When executing a 10-step untrusted package detonation pipeline, step 7 represents the execution of an unverified post-install hook. When this step crashes or contaminates the guest filesystem with broken dependencies, resuming on a tainted disk risks compounding hidden errors, while spinning up a fresh microVM wastes compute and re-download time for steps 1 through 6. The rollback policy utilizes a snapshot taken immediately after step 6 to restore the pristine baseline environment in milliseconds, allowing the agent to isolate the crash cause and complete subsequent analysis steps safely.",
+  "trace_path": "reports/failure_trace.jsonl"
+}
+

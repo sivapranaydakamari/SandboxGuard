@@ -1,0 +1,22 @@
+{"step":1,"ts":"2026-10-21T04:10:00.120Z","event":"step_started","action":"Environment probe and architecture verification","target":"celesto_sandbox"}
+{"step":1,"ts":"2026-10-21T04:10:00.640Z","event":"step_completed","status":"ok","output":"Linux x86_64 microVM ready"}
+{"step":2,"ts":"2026-10-21T04:10:01.050Z","event":"step_started","action":"Package manifest inspection","target":"celesto_sandbox"}
+{"step":2,"ts":"2026-10-21T04:10:01.420Z","event":"step_completed","status":"ok","output":"Parsed 14 dependencies"}
+{"step":3,"ts":"2026-10-21T04:10:01.810Z","event":"step_started","action":"Cloning untrusted test fixture into /tmp/detonate","target":"celesto_sandbox"}
+{"step":3,"ts":"2026-10-21T04:10:02.500Z","event":"step_completed","status":"ok","output":"Cloned commit a7b91c0"}
+{"step":4,"ts":"2026-10-21T04:10:02.900Z","event":"step_started","action":"Generating deterministic lockfile graph","target":"celesto_sandbox"}
+{"step":4,"ts":"2026-10-21T04:10:03.450Z","event":"step_completed","status":"ok","output":"Lockfile generated successfully"}
+{"step":5,"ts":"2026-10-21T04:10:03.800Z","event":"step_started","action":"Static heuristic scan for shell escapes","target":"celesto_sandbox"}
+{"step":5,"ts":"2026-10-21T04:10:04.220Z","event":"step_completed","status":"ok","output":"No binary payloads detected"}
+{"step":6,"ts":"2026-10-21T04:10:04.600Z","event":"step_started","action":"Creating snapshot checkpoint snap-step6-preinstall","target":"celesto_sandbox"}
+{"step":6,"ts":"2026-10-21T04:10:05.150Z","event":"step_completed","status":"ok","snapshot_id":"snap-step6-preinstall"}
+{"step":7,"ts":"2026-10-21T04:10:05.500Z","event":"step_started","action":"Executing untrusted pre-install detonation script","target":"celesto_sandbox"}
+{"step":7,"ts":"2026-10-21T04:10:06.310Z","event":"step_failed","status":"error","exit_code":1,"error":"Post-install lifecycle hook crashed with segmentation fault"}
+{"step":7,"ts":"2026-10-21T04:10:06.450Z","event":"policy_applied","policy":"rollback","snapshot_id":"snap-step6-preinstall","rationale":"Reverting tainted microVM filesystem to clean pre-install checkpoint"}
+{"step":8,"ts":"2026-10-21T04:10:07.010Z","event":"step_started","action":"Triage crashed hook code using restored clean filesystem","target":"celesto_sandbox"}
+{"step":8,"ts":"2026-10-21T04:10:07.520Z","event":"step_completed","status":"ok","output":"Identified bad pointer arithmetic in native addon"}
+{"step":9,"ts":"2026-10-21T04:10:07.900Z","event":"step_started","action":"Synthesizing structured security finding report","target":"celesto_sandbox"}
+{"step":9,"ts":"2026-10-21T04:10:08.340Z","event":"step_completed","status":"ok","output":"Finding report generated"}
+{"step":10,"ts":"2026-10-21T04:10:08.700Z","event":"step_started","action":"Sandbox teardown and lifecycle cleanup","target":"celesto_sandbox"}
+{"step":10,"ts":"2026-10-21T04:10:09.110Z","event":"step_completed","status":"succeeded","output":"Sandbox deleted, run completed successfully"}
+

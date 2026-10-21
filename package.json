@@ -1,0 +1,25 @@
+{
+  "name": "sandboxguard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@celestoai/sdk": "^0.1.6",
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "openai": "^7.39.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

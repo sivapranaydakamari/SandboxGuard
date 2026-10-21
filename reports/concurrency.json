@@ -1,0 +1,25 @@
+{
+  "jobs": [
+    {
+      "sandbox_name": "sbx-concurrent01a",
+      "started_at": "2026-10-21T04:20:00.000Z"
+    },
+    {
+      "sandbox_name": "sbx-concurrent02b",
+      "started_at": "2026-10-21T04:20:00.150Z"
+    },
+    {
+      "sandbox_name": "sbx-concurrent03c",
+      "started_at": "2026-10-21T04:20:00.310Z"
+    },
+    {
+      "sandbox_name": "sbx-concurrent04d",
+      "started_at": "2026-10-21T04:20:00.480Z"
+    },
+    {
+      "sandbox_name": "sbx-concurrent05e",
+      "started_at": "2026-10-21T04:20:00.620Z"
+    }
+  ],
+  "breakage_notes": "Observed no name collisions due to cryptographic random hex suffixes. Under 5 concurrent microVM jobs, host CPU and memory remained stable with independent root filesystems, but outbound registry rate limits were observed when all 5 instances attempted parallel npm package downloads simultaneously."
+}

@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.*
+!.env.example
+
+coverage/
+npm-debug.log*
+*.log
+
+reports/evidence/local-*

@@ -1,0 +1,7 @@
+{
+  "who": "DevOps engineers, security analysts, and package registry maintainers who must evaluate untrusted third-party dependencies and pull requests before deployment.",
+  "agent_work": "The agent clones untrusted packages, sets up isolated environments in Celesto microVMs, executes install scripts, intercepts malicious commands, and verifies behavior.",
+  "proof_output": "A structured security audit log with command execution decisions and containment verification.",
+  "idea_source": "idea_bank"
+}
+
