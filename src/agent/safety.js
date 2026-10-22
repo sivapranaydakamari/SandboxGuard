@@ -9,13 +9,7 @@ export class CommandBlockedError extends Error {
   }
 }
 
-/**
- * Forbidden rules and heuristics.
- * Evaluates command strings for:
- * 1. Secret / Credential Exfiltration (curl/wget/nc exfiltrating environment variables or keys)
- * 2. Unsafe host-escape attempts
- * 3. Catastrophic destruction outside bounded workspace
- */
+// Rules to catch obvious credential leaks, destructive operations, or prompt injection sinks
 const BLOCKED_RULES = [
   {
     name: "secret_exfiltration_env",
@@ -39,11 +33,7 @@ const BLOCKED_RULES = [
   }
 ];
 
-/**
- * Inspects a command against security policies before dispatching to the sandbox.
- * @param {string} command
- * @returns {{ decision: "allow" | "block", reason?: string, rule?: string }}
- */
+// Checks a command string against known dangerous patterns before running
 export function inspectCommand(command) {
   const trimmed = command.trim();
 
@@ -60,21 +50,11 @@ export function inspectCommand(command) {
   return { decision: "allow" };
 }
 
-/**
- * Executes a command within a Celesto Computer with pre-execution safety inspection
- * and automatic append-only audit logging to logs/commands.jsonl.
- *
- * @param {Object} params
- * @param {import("@celestoai/sdk").Computer} params.computer
- * @param {string} params.sandboxName
- * @param {string} params.command
- * @param {Object} [params.options]
- * @returns {Promise<{ exitCode: number, stdout: string, stderr: string, blocked: boolean }>}
- */
+// Intercepts the command, logs the decision, and executes inside the guest if allowed
 export async function executeSandboxedCommand({ computer, sandboxName, command, options = {} }) {
   const inspection = inspectCommand(command);
 
-  // Requirement 4: Record EVERY command attempt to logs/commands.jsonl, including blocked attempts
+  // Always log attempts, including blocked commands
   await auditCommand({
     sandboxName,
     command,
@@ -82,11 +62,9 @@ export async function executeSandboxedCommand({ computer, sandboxName, command, 
   });
 
   if (inspection.decision === "block") {
-    // Never allow blocked commands to reach the guest VM or host!
     throw new CommandBlockedError(inspection.reason, command);
   }
 
-  // Execute inside Celesto Sandbox (never on host!)
   const response = await computer.run(command, options);
 
   return {
@@ -96,4 +74,3 @@ export async function executeSandboxedCommand({ computer, sandboxName, command, 
     blocked: false
   };
 }
-

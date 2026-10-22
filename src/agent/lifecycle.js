@@ -6,30 +6,24 @@ import { Computer } from "@celestoai/sdk";
 const activeSandboxes = new Map();
 let interruptHandlerRegistered = false;
 
-/**
- * Generates a collision-resistant sandbox name matching:
- * ^sbx-[a-z0-9]{8,}$
- */
+// Generates a random sandbox name like sbx-a1b2c3d4e5f6
 export function generateSandboxName(prefix = "sbx") {
-  const randomSuffix = crypto.randomBytes(6).toString("hex"); // 12 hex chars
+  const randomSuffix = crypto.randomBytes(6).toString("hex");
   return `${prefix}-${randomSuffix}`;
 }
 
-/**
- * Registers cleanup handlers on process signals (SIGINT, SIGTERM)
- * to ensure no orphaned sandboxes remain.
- */
+// Clean up any remaining sandboxes on process exit or Ctrl-C
 export function registerInterruptHandlers() {
   if (interruptHandlerRegistered) return;
   interruptHandlerRegistered = true;
 
   const cleanupAll = async (signal) => {
-    console.warn(`\n[Lifecycle] Received ${signal}. Cleaning up ${activeSandboxes.size} active sandbox(es)...`);
+    console.warn(`\nReceived ${signal}. Cleaning up ${activeSandboxes.size} active sandbox(es)...`);
     const deletions = [];
     for (const [name, computer] of activeSandboxes.entries()) {
       deletions.push(
         computer.delete().catch((err) => {
-          console.error(`[Lifecycle] Failed to clean up ${name}:`, err.message);
+          console.error(`Failed to clean up ${name}:`, err.message);
         })
       );
     }
@@ -42,15 +36,7 @@ export function registerInterruptHandlers() {
   process.once("SIGTERM", () => cleanupAll("SIGTERM"));
 }
 
-/**
- * Executes an operation with guaranteed cleanup on success, failure, and interrupt.
- *
- * @param {Object} options
- * @param {string} [options.name]
- * @param {Object} [options.params]
- * @param {(computer: Computer, sandboxName: string) => Promise<T>} fn
- * @returns {Promise<T>}
- */
+// Helper wrapper to create a sandbox, run work, and guarantee deletion in finally
 export async function withSandbox(options, fn) {
   registerInterruptHandlers();
 
@@ -59,7 +45,6 @@ export async function withSandbox(options, fn) {
   let status = "failed";
 
   try {
-    // Attempt creation through Celesto SDK with required idempotency key
     computer = await Computer.create(
       {
         templateId: options.templateId || "scratch",
@@ -85,17 +70,14 @@ export async function withSandbox(options, fn) {
       try {
         await computer.delete();
       } catch (delError) {
-        console.error(`[Lifecycle] Cleanup error for ${sandboxName}:`, delError.message);
+        console.error(`Cleanup error for ${sandboxName}:`, delError.message);
       }
       activeSandboxes.delete(sandboxName);
     }
   }
 }
 
-/**
- * Writes or updates reports/lifecycle.json
- * @param {string[]} sandboxNames
- */
+// Writes lifecycle metadata to reports/lifecycle.json
 export async function writeLifecycleReport(sandboxNames) {
   const reportsDir = path.resolve(process.cwd(), "reports");
   await fs.mkdir(reportsDir, { recursive: true });
@@ -117,4 +99,3 @@ export async function writeLifecycleReport(sandboxNames) {
 }
 
 export { activeSandboxes };
-

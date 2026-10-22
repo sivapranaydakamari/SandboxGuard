@@ -54,7 +54,7 @@ describe("Safety Hooks & Pre-Execution Inspection", () => {
   });
 });
 
-describe("Command Audit Logging (Requirement 4)", () => {
+describe("Command Audit Logging", () => {
   test("writes entries with exact schema and execution_target === 'celesto_sandbox'", async () => {
     const sandboxName = generateSandboxName("sbx");
 
