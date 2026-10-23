@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-10-21T07:02:19.573Z",
+  "sandbox_id": "cmp_de3d11b52258",
+  "status_after_boot": "running",
+  "command": "printf 'SANDBOXGUARD_LIVE_TEST_OK\\n'",
+  "exit_code": 0,
+  "stdout": "SANDBOXGUARD_LIVE_TEST_OK",
+  "cleanup_verified": true
+}
